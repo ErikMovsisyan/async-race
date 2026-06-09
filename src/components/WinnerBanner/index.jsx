@@ -1,13 +1,6 @@
 import CarIcon from '../CarIcon';
-import type { Car } from '../../types';
 
-interface Props {
-  winner: Car;
-  time: number;
-  onClose: () => void;
-}
-
-export default function WinnerBanner({ winner, time, onClose }: Props) {
+export default function WinnerBanner({ winner, time, onClose }) {
   return (
     <div className="banner-overlay" onClick={onClose}>
       <div className="banner-box" onClick={(e) => e.stopPropagation()}>

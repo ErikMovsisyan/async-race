@@ -1,9 +1,4 @@
-interface Props {
-  color: string;
-  size?: number;
-}
-
-export default function CarIcon({ color, size = 80 }: Props) {
+export default function CarIcon({ color, size = 80 }) {
   const h = size * 0.45;
   return (
     <svg width={size} height={h} viewBox="0 0 80 36">

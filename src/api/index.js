@@ -1,92 +1,85 @@
-import type { Car, Winner, EngineData } from '../types';
-
 const BASE = 'http://127.0.0.1:3000';
 
-export async function getCars(page: number, limit = 7): Promise<{ cars: Car[]; total: number }> {
+export async function getCars(page, limit = 7) {
   const res = await fetch(`${BASE}/garage?_page=${page}&_limit=${limit}`);
   const total = Number(res.headers.get('X-Total-Count') ?? '0');
-  const cars = (await res.json()) as Car[];
+  const cars = await res.json();
   return { cars, total };
 }
 
-export async function getCar(id: number): Promise<Car> {
+export async function getCar(id) {
   const res = await fetch(`${BASE}/garage/${id}`);
-  return res.json() as Promise<Car>;
+  return res.json();
 }
 
-export async function createCar(name: string, color: string): Promise<Car> {
+export async function createCar(name, color) {
   const res = await fetch(`${BASE}/garage`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ name, color }),
   });
-  return res.json() as Promise<Car>;
+  return res.json();
 }
 
-export async function updateCar(id: number, name: string, color: string): Promise<Car> {
+export async function updateCar(id, name, color) {
   const res = await fetch(`${BASE}/garage/${id}`, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ name, color }),
   });
-  return res.json() as Promise<Car>;
+  return res.json();
 }
 
-export async function deleteCar(id: number): Promise<void> {
+export async function deleteCar(id) {
   await fetch(`${BASE}/garage/${id}`, { method: 'DELETE' });
 }
 
-export async function startEngine(id: number): Promise<EngineData> {
+export async function startEngine(id) {
   const res = await fetch(`${BASE}/engine?id=${id}&status=started`, { method: 'PATCH' });
-  return res.json() as Promise<EngineData>;
+  return res.json();
 }
 
-export async function stopEngine(id: number): Promise<void> {
+export async function stopEngine(id) {
   await fetch(`${BASE}/engine?id=${id}&status=stopped`, { method: 'PATCH' });
 }
 
-export async function driveMode(id: number): Promise<void> {
+export async function driveMode(id) {
   const res = await fetch(`${BASE}/engine?id=${id}&status=drive`, { method: 'PATCH' });
   if (!res.ok) throw new Error('engine broken');
 }
 
-export async function getWinners(
-  page: number,
-  limit = 10,
-  sort = 'id',
-  order = 'ASC',
-): Promise<{ winners: Winner[]; total: number }> {
+export async function getWinners(page, limit = 10, sort = 'id', order = 'ASC') {
   const url = `${BASE}/winners?_page=${page}&_limit=${limit}&_sort=${sort}&_order=${order}`;
   const res = await fetch(url);
   const total = Number(res.headers.get('X-Total-Count') ?? '0');
-  const winners = (await res.json()) as Winner[];
+  const winners = await res.json();
   return { winners, total };
 }
 
-export async function getWinner(id: number): Promise<Winner | null> {
+export async function getWinner(id) {
   const res = await fetch(`${BASE}/winners/${id}`);
   if (res.status === 404) return null;
-  return res.json() as Promise<Winner>;
+  return res.json();
 }
 
-export async function createWinner(id: number, wins: number, time: number): Promise<Winner> {
+export async function createWinner(id, wins, time) {
   const res = await fetch(`${BASE}/winners`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ id, wins, time }),
   });
-  return res.json() as Promise<Winner>;
+  return res.json();
 }
 
-export async function updateWinner(id: number, wins: number, time: number): Promise<Winner> {
+export async function updateWinner(id, wins, time) {
   const res = await fetch(`${BASE}/winners/${id}`, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ wins, time }),
   });
-  return res.json() as Promise<Winner>;
+  return res.json();
 }
 
-export async function deleteWinner(id: number): Promise<void> {
+export async function deleteWinner(id) {
   await fetch(`${BASE}/winners/${id}`, { method: 'DELETE' });
 }

@@ -1,11 +1,4 @@
-interface Props {
-  page: number;
-  total: number;
-  perPage: number;
-  onPageChange: (page: number) => void;
-}
-
-export default function Pagination({ page, total, perPage, onPageChange }: Props) {
+export default function Pagination({ page, total, perPage, onPageChange }) {
   const totalPages = Math.ceil(total / perPage);
 
   if (totalPages <= 1) return null;

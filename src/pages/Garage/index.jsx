@@ -11,10 +11,8 @@ import {
   getWinner, createWinner, updateWinner, deleteWinner,
 } from '../../api';
 import CarCard from '../../components/CarCard';
-import type { CarCardHandle } from '../../components/CarCard';
 import Pagination from '../../components/Pagination';
 import WinnerBanner from '../../components/WinnerBanner';
-import type { Car } from '../../types';
 
 const CARS_PER_PAGE = 7;
 
@@ -36,10 +34,10 @@ export default function Garage() {
   const { cars, total, page, selectedCar, newCarName, newCarColor, editCarName, editCarColor, isRacing, winner } =
     useAppSelector((s) => s.cars);
 
-  const cardRefs = useRef<(CarCardHandle | null)[]>([]);
+  const cardRefs = useRef([]);
   const bannerTimeRef = useRef(0);
 
-  const loadCars = useCallback(async (p: number) => {
+  const loadCars = useCallback(async (p) => {
     const data = await getCars(p, CARS_PER_PAGE);
     dispatch(setCars(data));
   }, [dispatch]);
@@ -62,9 +60,9 @@ export default function Garage() {
     await loadCars(page);
   }
 
-  async function handleDelete(id: number) {
+  async function handleDelete(id) {
     await deleteCar(id);
-    await deleteWinner(id).catch(() => {}); // might not exist
+    await deleteWinner(id).catch(() => {});
     const newTotal = total - 1;
     const maxPage = Math.max(1, Math.ceil(newTotal / CARS_PER_PAGE));
     const nextPage = page > maxPage ? maxPage : page;
@@ -80,7 +78,7 @@ export default function Garage() {
     await loadCars(page);
   }
 
-  async function saveRaceWinner(car: Car, timeMs: number) {
+  async function saveRaceWinner(car, timeMs) {
     const timeSec = parseFloat((timeMs / 1000).toFixed(2));
     const existing = await getWinner(car.id);
     if (existing) {
@@ -94,7 +92,7 @@ export default function Garage() {
     dispatch(setIsRacing(true));
     dispatch(setWinner(null));
 
-    let firstWinner: Car | null = null;
+    let firstWinner = null;
 
     const promises = cars.map((car, i) => {
       const cardRef = cardRefs.current[i];
@@ -117,10 +115,6 @@ export default function Garage() {
     await Promise.all(cardRefs.current.map((ref) => ref?.reset()));
     dispatch(setIsRacing(false));
     dispatch(setWinner(null));
-  }
-
-  function handlePageChange(p: number) {
-    dispatch(setPage(p));
   }
 
   return (
@@ -211,7 +205,7 @@ export default function Garage() {
         page={page}
         total={total}
         perPage={CARS_PER_PAGE}
-        onPageChange={handlePageChange}
+        onPageChange={(p) => dispatch(setPage(p))}
       />
     </div>
   );

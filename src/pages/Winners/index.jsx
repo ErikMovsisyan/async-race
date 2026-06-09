@@ -4,7 +4,6 @@ import { setWinners, setWinnersPage, setSortField, setSortOrder } from '../../st
 import { getWinners, getCar } from '../../api';
 import Pagination from '../../components/Pagination';
 import CarIcon from '../../components/CarIcon';
-import type { SortField, SortOrder } from '../../types';
 
 const WINNERS_PER_PAGE = 10;
 
@@ -12,7 +11,7 @@ export default function Winners() {
   const dispatch = useAppDispatch();
   const { winners, total, page, sortField, sortOrder } = useAppSelector((s) => s.winners);
 
-  const loadWinners = useCallback(async (p: number, field: SortField, order: SortOrder) => {
+  const loadWinners = useCallback(async (p, field, order) => {
     const data = await getWinners(p, WINNERS_PER_PAGE, field, order);
     const full = await Promise.all(
       data.winners.map(async (w) => {
@@ -27,17 +26,16 @@ export default function Winners() {
     void loadWinners(page, sortField, sortOrder);
   }, [page, sortField, sortOrder, loadWinners]);
 
-  function handleSort(field: SortField) {
+  function handleSort(field) {
     if (field === sortField) {
-      const next: SortOrder = sortOrder === 'ASC' ? 'DESC' : 'ASC';
-      dispatch(setSortOrder(next));
+      dispatch(setSortOrder(sortOrder === 'ASC' ? 'DESC' : 'ASC'));
     } else {
       dispatch(setSortField(field));
       dispatch(setSortOrder('ASC'));
     }
   }
 
-  function sortArrow(field: SortField) {
+  function sortArrow(field) {
     if (sortField !== field) return '';
     return sortOrder === 'ASC' ? ' ▲' : ' ▼';
   }
@@ -57,16 +55,10 @@ export default function Winners() {
               <th>№</th>
               <th>Car</th>
               <th>Name</th>
-              <th
-                className="sortable"
-                onClick={() => handleSort('wins')}
-              >
+              <th className="sortable" onClick={() => handleSort('wins')}>
                 Wins{sortArrow('wins')}
               </th>
-              <th
-                className="sortable"
-                onClick={() => handleSort('time')}
-              >
+              <th className="sortable" onClick={() => handleSort('time')}>
                 Best Time (s){sortArrow('time')}
               </th>
             </tr>
@@ -75,9 +67,7 @@ export default function Winners() {
             {winners.map((w, i) => (
               <tr key={w.id}>
                 <td>{(page - 1) * WINNERS_PER_PAGE + i + 1}</td>
-                <td>
-                  <CarIcon color={w.car.color} size={60} />
-                </td>
+                <td><CarIcon color={w.car.color} size={60} /></td>
                 <td>{w.car.name}</td>
                 <td>{w.wins}</td>
                 <td>{w.time.toFixed(2)}</td>

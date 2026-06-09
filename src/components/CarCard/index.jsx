@@ -1,23 +1,10 @@
 import { forwardRef, useImperativeHandle, useRef, useState } from 'react';
 import CarIcon from '../CarIcon';
 import { startEngine, stopEngine, driveMode } from '../../api';
-import type { Car } from '../../types';
 
-interface Props {
-  car: Car;
-  onSelect: (car: Car) => void;
-  onDelete: (id: number) => void;
-  isRaceActive: boolean;
-}
-
-export interface CarCardHandle {
-  startRace: () => Promise<{ broken: boolean; time: number }>;
-  reset: () => Promise<void>;
-}
-
-const CarCard = forwardRef<CarCardHandle, Props>(({ car, onSelect, onDelete, isRaceActive }, ref) => {
-  const carEl = useRef<HTMLDivElement>(null);
-  const trackEl = useRef<HTMLDivElement>(null);
+const CarCard = forwardRef(({ car, onSelect, onDelete, isRaceActive }, ref) => {
+  const carEl = useRef(null);
+  const trackEl = useRef(null);
   const startTime = useRef(0);
   const [engineOn, setEngineOn] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -41,7 +28,6 @@ const CarCard = forwardRef<CarCardHandle, Props>(({ car, onSelect, onDelete, isR
       await driveMode(car.id);
       return { broken: false, time: Date.now() - startTime.current };
     } catch {
-      // freeze car where it is
       if (carEl.current) {
         const tx = window.getComputedStyle(carEl.current).transform;
         carEl.current.style.transition = 'none';
