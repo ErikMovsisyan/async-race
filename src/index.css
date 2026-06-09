@@ -1,0 +1,415 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #0f0e17;
+  color: #fffffe;
+  min-height: 100vh;
+}
+
+/* ── Header ── */
+.app-header {
+  background: #1a1a2e;
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  border-bottom: 2px solid #e94560;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.app-title {
+  font-size: 1.4rem;
+  color: #e94560;
+  white-space: nowrap;
+}
+
+.app-nav {
+  display: flex;
+  gap: 8px;
+}
+
+.nav-link {
+  padding: 6px 18px;
+  border-radius: 20px;
+  text-decoration: none;
+  color: #fffffe;
+  border: 1px solid #444;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+
+.nav-link:hover {
+  border-color: #e94560;
+  color: #e94560;
+}
+
+.nav-link.active {
+  background: #e94560;
+  border-color: #e94560;
+  color: #fff;
+}
+
+/* ── Main ── */
+.app-main {
+  padding: 20px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* ── Buttons ── */
+.btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: opacity 0.15s, transform 0.1s;
+}
+
+.btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn:not(:disabled):hover {
+  opacity: 0.85;
+}
+
+.btn:not(:disabled):active {
+  transform: scale(0.97);
+}
+
+.btn-primary {
+  background: #e94560;
+  color: #fff;
+}
+
+.btn-secondary {
+  background: #2d2d44;
+  color: #fffffe;
+  border: 1px solid #555;
+}
+
+.btn-race {
+  background: #27ae60;
+  color: #fff;
+}
+
+.btn-reset {
+  background: #e67e22;
+  color: #fff;
+}
+
+.btn-danger {
+  background: #c0392b;
+  color: #fff;
+}
+
+.btn-select {
+  background: #2980b9;
+  color: #fff;
+}
+
+.btn-go {
+  background: #27ae60;
+  color: #fff;
+  font-weight: 700;
+  width: 30px;
+  padding: 4px;
+}
+
+.btn-stop {
+  background: #c0392b;
+  color: #fff;
+  font-weight: 700;
+  width: 30px;
+  padding: 4px;
+}
+
+.btn-small {
+  padding: 4px 10px;
+  font-size: 0.78rem;
+}
+
+/* ── Inputs ── */
+.input {
+  padding: 8px 12px;
+  background: #1a1a2e;
+  border: 1px solid #444;
+  border-radius: 6px;
+  color: #fffffe;
+  font-size: 0.9rem;
+  outline: none;
+  width: 200px;
+}
+
+.input:focus {
+  border-color: #e94560;
+}
+
+.color-picker {
+  width: 40px;
+  height: 36px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  padding: 2px;
+  background: transparent;
+}
+
+/* ── Control panel ── */
+.control-panel {
+  background: #1a1a2e;
+  padding: 16px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.car-form {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.race-controls {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* ── Section title ── */
+.section-title {
+  font-size: 1.4rem;
+  margin-bottom: 14px;
+  color: #fffffe;
+}
+
+.count {
+  color: #e94560;
+}
+
+.empty-msg {
+  text-align: center;
+  color: #888;
+  padding: 40px;
+  font-size: 1rem;
+}
+
+/* ── Car list ── */
+.car-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* ── Car card ── */
+.car-card {
+  background: #1a1a2e;
+  border-radius: 8px;
+  padding: 10px 12px;
+  border: 1px solid #2a2a3e;
+}
+
+.car-controls-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+
+.car-btns {
+  display: flex;
+  gap: 6px;
+}
+
+.car-engine-btns {
+  display: flex;
+  gap: 4px;
+}
+
+.car-name {
+  font-size: 0.9rem;
+  color: #ccc;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 200px;
+}
+
+/* ── Race track ── */
+.car-track {
+  position: relative;
+  height: 50px;
+  background: #0a0a1a;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid #2a2a3e;
+}
+
+.car-mover {
+  position: absolute;
+  top: 50%;
+  left: 8px;
+  transform: translateY(-50%);
+  will-change: transform;
+}
+
+.finish-flag {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.4rem;
+}
+
+/* ── Pagination ── */
+.pagination {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 20px;
+  justify-content: center;
+}
+
+.pagination-info {
+  font-size: 0.9rem;
+  color: #aaa;
+  min-width: 60px;
+  text-align: center;
+}
+
+/* ── Winners table ── */
+.winners-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.winners-table th,
+.winners-table td {
+  padding: 10px 14px;
+  text-align: left;
+  border-bottom: 1px solid #2a2a3e;
+}
+
+.winners-table th {
+  background: #1a1a2e;
+  color: #e94560;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.winners-table tr:hover td {
+  background: #1a1a2e;
+}
+
+.sortable {
+  cursor: pointer;
+  user-select: none;
+}
+
+.sortable:hover {
+  color: #ff6b6b;
+}
+
+/* ── Winner Banner ── */
+.banner-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.banner-box {
+  background: #1a1a2e;
+  border: 2px solid #e94560;
+  border-radius: 14px;
+  padding: 36px 48px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  min-width: 280px;
+}
+
+.banner-box h2 {
+  font-size: 2rem;
+  color: #e94560;
+}
+
+.banner-name {
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.banner-time {
+  color: #aaa;
+  font-size: 1rem;
+}
+
+/* ── Responsive ── */
+@media (max-width: 600px) {
+  .app-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 10px 14px;
+  }
+
+  .app-main {
+    padding: 12px;
+  }
+
+  .input {
+    width: 140px;
+  }
+
+  .car-name {
+    max-width: 120px;
+  }
+
+  .banner-box {
+    padding: 24px 28px;
+    min-width: 260px;
+  }
+
+  .winners-table th,
+  .winners-table td {
+    padding: 8px 8px;
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 500px) {
+  .car-controls-row {
+    gap: 6px;
+  }
+
+  .input {
+    width: 110px;
+    font-size: 0.8rem;
+  }
+
+  .car-track {
+    height: 44px;
+  }
+}
